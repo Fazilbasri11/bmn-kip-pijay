@@ -175,18 +175,7 @@ async function generatePDF() {
 
   try {
     const url = GAS_WEB_APP_URL + '?action=generatePDF&ruangan=' + encodeURIComponent(ruangan);
-    const result = await fetchJSON(url);
-
-    if (result.success) {
-      status.className = 'status-box status-success';
-      status.innerHTML = `
-        ✅ Berhasil cuy<br>
-        <a href="${result.pdfUrl}" target="_blank" class="btn-download">⬇️ Download PDF</a>
-      `;
-      btn.innerHTML = '🔁 Generate Lagi';
-    } else {
-      throw new Error(result.error || 'Unknown error');
-    }
+    window.open(url, '_blank');
 
   } catch (err) {
     console.error(err);
