@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pemeliharaan BMN — KIP Kabupaten Pidie Jaya</title>
+<!-- Menambahkan font Playfair Display dan DM Sans dari index.html agar Navbar sinkron -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --merah: #7B1113;
+    --merah-tua: #5a0d0f;
+    --merah-muda: #9e1518;
+    --krem: #f5f0e8;
+    --krem-gelap: #ede5d8;
+    --teks: #1a1a1a;
+    --teks-muted: #6b6560;
+    --hijau: #2d6a2d;
+    --hijau-bg: #e8f5e8;
+    --kuning: #7a5c00;
+    --kuning-bg: #fff8e0;
+    --merah-status: #8b1a1a;
+    --merah-status-bg: #fdeaea;
+    --abu: #e8e2d8;
+    --putih: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--krem);
+    color: var(--teks);
+    min-height: 100vh;
+  }
+
+  /* ===== NAVBAR (DISAMAKAN DENGAN INDEX.HTML) ===== */
+  #main-nav {
+    position:sticky;top:0;z-index:200;
+    background:rgba(78,14,14,0.97);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 2rem;height:64px;
+    box-shadow:0 2px 24px rgba(0,0,0,0.3);
+    border-bottom:none;
+  }
+  .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .nav-logo{
+    width:38px;height:38px;border-radius:8px;flex-shrink:0;
+    background:linear-gradient(135deg,#D4A017,#F0C040);
+    display:flex;align-items:center;justify-content:center;font-size:18px;color:#4E0E0E;
+  }
+  .nav-brand-text{color:#fff; line-height:1.2}
+  .nav-brand-text .main{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;line-height:1.1; display:block;}
+  .nav-brand-text .sub{font-size:10px;opacity:.65;letter-spacing:.06em;text-transform:uppercase; display:block;}
+  .nav-links{display:flex;align-items:center;gap:4px}
+  .nav-links a{
+    color:rgba(255,255,255,.75);text-decoration:none;
+    font-size:13px;font-weight:500;padding:8px 12px;border-radius:6px;
+    transition:all .2s;white-space:nowrap; font-family:'DM Sans', sans-serif;
+  }
+  .nav-links a:hover{background:rgba(255,255,255,.12);color:#fff}
+  .nav-links a.active{background:rgba(212,160,23,.25);color:#F0C040; border:none;}
+  .nav-hamburger{
+    display:none;flex-direction:column;gap:5px;cursor:pointer;
+    padding:8px;background:none;border:none;
+  }
+  .nav-hamburger span{width:22px;height:2px;background:rgba(255,255,255,.8);border-radius:2px;display:block;transition:all .3s}
+
+  @media(max-width:900px){
+    #main-nav {padding: 0 1rem;}
+    .nav-links{display:none}
+    .nav-links.open{
+      display:flex;flex-direction:column;
+      position:absolute;top:64px;left:0;right:0;
+      background:#4E0E0E;padding:1rem;gap:4px;z-index:199;
+    }
+    .nav-hamburger{display:flex}
+  }
+
+  /* ===== HEADER SECTION ===== */
+  .page-header {
+    background: linear-gradient(135deg, var(--merah-tua) 0%, var(--merah) 100%);
+    padding: 2.5rem 2rem 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 30%;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .breadcrumb span { color: rgba(255,255,255,0.35); }
+
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+  }
+
+  .page-header p {
+    color: rgba(255,255,255,0.65);
+    font-size: 13px;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* ===== STAT CARDS ===== */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: var(--putih);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--abu);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  }
+
+  .stat-icon {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .stat-icon.merah { background: var(--merah-status-bg); }
+  .stat-icon.kuning { background: var(--kuning-bg); }
+  .stat-icon.hijau { background: var(--hijau-bg); }
+
+  .stat-info { flex: 1; }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .stat-num.merah { color: var(--merah-status); }
+  .stat-num.kuning { color: var(--kuning); }
+  .stat-num.hijau { color: var(--hijau); }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--teks-muted);
+    font-weight: 500;
+  }
+
+  .stat-sub {
+    font-size: 11px;
+    margin-top: 2px;
+    font-weight: 600;
+  }
+  .stat-sub.merah { color: var(--merah-status); }
+  .stat-sub.kuning { color: var(--kuning); }
+  .stat-sub.hijau { color: var(--hijau); }
+
+  /* ===== TABLE SECTION ===== */
+  .section-card {
+    background: var(--putih);
+    border-radius: 14px;
+    border: 1px solid var(--abu);
+    overflow: hidden;
+  }
+
+  .section-head {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--abu);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .section-head h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--teks);
+  }
+
+  .section-head p {
+    font-size: 12px;
+    color: var(--teks-muted);
+    margin-top: 2px;
+  }
+
+  .filter-wrap {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--abu);
+    background: transparent;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--teks-muted);
+    font-family: inherit;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .filter-btn:hover { border-color: var(--merah); color: var(--merah); }
+
+  .filter-btn.active-all {
+    background: var(--merah);
+    color: #fff;
+    border-color: var(--merah);
+  }
+
+  .filter-btn.active-merah { background: var(--merah-status-bg); color: var(--merah-status); border-color: #f0a0a0; }
+  .filter-btn.active-kuning { background: var(--kuning-bg); color: var(--kuning); border-color: #e0c060; }
+  .filter-btn.active-hijau { background: var(--hijau-bg); color: var(--hijau); border-color: #80c080; }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .dot-merah { background: #E24B4A; }
+  .dot-kuning { background: #EF9F27; }
+  .dot-hijau { background: #4CAF50; }
+
+  /* ===== TABLE ===== */
+  .table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead tr {
+    background: var(--krem);
+  }
+
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--teks-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 1px solid var(--abu);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--krem-gelap);
+    color: var(--teks);
+    vertical-align: middle;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  tbody tr:hover td { background: #fdf9f3; }
+
+  .nama-barang { font-weight: 600; font-size: 13px; }
+  .ruangan-text { color: var(--teks-muted); font-size: 12px; }
+  .pj-text { font-size: 12px; color: var(--teks-muted); }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .badge-merah { background: var(--merah-status-bg); color: var(--merah-status); border: 1px solid #f0b0b0; }
+  .badge-kuning { background: var(--kuning-bg); color: var(--kuning); border: 1px solid #e0c060; }
+  .badge-hijau { background: var(--hijau-bg); color: var(--hijau); border: 1px solid #90c890; }
+  .badge-abu { background: #f0ece4; color: #888; border: 1px solid var(--abu); }
+
+  .btn-catat {
+    padding: 6px 14px;
+    background: var(--merah);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-catat:hover { background: var(--merah-tua); transform: scale(1.03); }
+
+  .tgl-lewat { color: var(--merah-status); font-weight: 600; font-size: 12px; }
+  .tgl-segera { color: var(--kuning); font-weight: 600; font-size: 12px; }
+  .tgl-aman { color: var(--teks-muted); font-size: 12px; }
+  .tgl-kosong { color: #bbb; font-size: 12px; font-style: italic; }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: var(--putih);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 460px;
+    overflow: hidden;
+    animation: slideUp 0.25s ease;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-header {
+    background: var(--merah-tua);
+    padding: 1.25rem 1.5rem;
+    color: white;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .modal-header h3 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .modal-header p { font-size: 12px; color: rgba(255,255,255,0.65); }
+
+  .modal-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    transition: background 0.15s;
+  }
+
+  .modal-close:hover { background: rgba(255,255,255,0.25); }
+
+  .modal-body { padding: 1.5rem; }
+
+  .form-group { margin-bottom: 1rem; }
+
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--teks-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .form-label span {
+    color: var(--merah-status);
+    margin-left: 2px;
+  }
+
+  input[type=date], select, textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--abu);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--teks);
+    background: var(--krem);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input[type=date]:focus, select:focus, textarea:focus {
+    border-color: var(--merah);
+    background: var(--putih);
+  }
+
+  textarea { resize: none; }
+
+  .modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--abu);
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .btn-batal {
+    padding: 9px 20px;
+    background: transparent;
+    border: 1.5px solid var(--abu);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--teks-muted);
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .btn-batal:hover { border-color: var(--teks-muted); color: var(--teks); }
+
+  .btn-simpan {
+    padding: 9px 24px;
+    background: var(--merah);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .btn-simpan:hover { background: var(--merah-tua); }
+  .btn-simpan:disabled { background: #ccc; cursor: not-allowed; }
+
+  /* ===== TOAST NOTIFIKASI ===== */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--merah-tua);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-left: 4px solid #4CAF50;
+    max-width: 360px;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  .toast-icon {
+    width: 22px; height: 22px;
+    background: #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 13px;
+  }
+
+  /* ===== INFO BAR ===== */
+  .info-bar {
+    background: #fff8e8;
+    border: 1px solid #f0d070;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--kuning);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state {
+    padding: 3rem;
+    text-align: center;
+    color: var(--teks-muted);
+  }
+
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ===== FOOTER ===== */
+  .page-footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 11px;
+    color: var(--teks-muted);
+    border-top: 1px solid var(--abu);
+    margin-top: 2rem;
+  }
+
+  /* ===== LOADING ===== */
+  .loading-row td {
+    text-align: center;
+    padding: 2rem;
+    color: var(--teks-muted);
+    font-size: 13px;
+  }
+
+  /* ===== SEARCH BAR ===== */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border: 1.5px solid var(--abu);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--teks);
+    background: var(--putih);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .search-input:focus {
+    border-color: var(--merah);
+    box-shadow: 0 0 0 3px rgba(123,17,19,0.08);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--teks-muted);
+    font-size: 15px;
+    pointer-events: none;
+  }
+
+  .search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--abu);
+    border: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    font-size: 11px;
+    cursor: pointer;
+    color: var(--teks-muted);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+  }
+
+  .search-clear.visible { display: flex; }
+
+  @media (max-width: 768px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .container { padding: 1rem; }
+    .page-header { padding: 1.5rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR (DIREVISI AGAR IDENTIK DENGAN INDEX) -->
+<nav id="main-nav">
+  <a class="nav-brand" href="index.html">
+    <div class="nav-logo">⚖️</div>
+    <div class="nav-brand-text">
+      <div class="main">KIP Pidie Jaya</div>
+      <div class="sub">Sistem Inventarisasi BMN</div>
+    </div>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="index.html#hero">Beranda</a>
+    <a href="index.html#dashboard">Dashboard</a>
+    <a href="pemeliharaan.html" class="active">Pemeliharaan</a>
+    <a href="index.html#faq">FAQ</a>
+    <a href="index.html#kontak">Kontak</a>
+  </div>
+  <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Buka menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="header-inner">
+    <div class="breadcrumb">
+      <span>Beranda</span> › Pemeliharaan BMN
+    </div>
+    <h1>Jadwal Pemeliharaan BMN</h1>
+    <p>Pantau dan catat pemeliharaan aset secara real-time — KIP Kabupaten Pidie Jaya</p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- STAT CARDS -->
+  <div class="stat-grid" id="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon merah">⚠️</div>
+      <div class="stat-info">
+        <div class="stat-num merah" id="jml-merah">—</div>
+        <div class="stat-label">Lewat jadwal</div>
+        <div class="stat-sub merah">Segera lakukan pemeliharaan</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon kuning">🔔</div>
+      <div class="stat-info">
+        <div class="stat-num kuning" id="jml-kuning">—</div>
+        <div class="stat-label">Dalam 14 hari</div>
+        <div class="stat-sub kuning">Segera dijadwalkan</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon hijau">✅</div>
+      <div class="stat-info">
+        <div class="stat-num hijau" id="jml-hijau">—</div>
+        <div class="stat-label">Kondisi aman</div>
+        <div class="stat-sub hijau">Belum waktunya</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFO BAR -->
+  <div class="info-bar">
+    💡 Data diambil otomatis dari Google Spreadsheet Master_Barang. Klik <strong>Catat Pemeliharaan</strong> untuk memperbarui tanggal pemeliharaan terakhir.
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input
+      type="text"
+      class="search-input"
+      id="search-input"
+      placeholder="Cari nama barang, pengguna, posisi..."
+      oninput="cariData(this.value)"
+    />
+    <button class="search-clear" id="search-clear" onclick="bersihkanCari()">✕</button>
+  </div>
+
+  <!-- TABLE SECTION -->
+  <div class="section-card">
+    <div class="section-head">
+      <div>
+        <h2>Daftar Aset &amp; Status Pemeliharaan</h2>
+        <p id="jumlah-tampil">Memuat data...</p>
+      </div>
+      <div class="filter-wrap">
+        <button class="filter-btn active-all" onclick="filterData('semua', this)">Semua</button>
+        <button class="filter-btn" onclick="filterData('merah', this)">
+          <span class="dot dot-merah"></span> Lewat Jadwal
+        </button>
+        <button class="filter-btn" onclick="filterData('kuning', this)">
+          <span class="dot dot-kuning"></span> Segera
+        </button>
+        <button class="filter-btn" onclick="filterData('hijau', this)">
+          <span class="dot dot-hijau"></span> Aman
+        </button>
+        <button class="filter-btn" onclick="filterData('belum', this)">
+          <span class="dot" style="background:#bbb"></span> Belum Diisi
+        </button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>NUP</th>
+            <th>Nama Barang</th>
+            <th>Posisi</th>
+            <th>Pengguna</th>
+            <th>Jadwal Berikutnya</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tabel-body">
+          <tr class="loading-row"><td colspan="7">Memuat data dari spreadsheet...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="page-footer">
+  KIP Kabupaten Pidie Jaya · Sistem Inventarisasi BMN · Data real-time dari Google Spreadsheet
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <h3 id="modal-nama">Nama Aset</h3>
+        <p id="modal-info">Ruangan · Penanggung Jawab</p>
+      </div>
+      <button class="modal-close" onclick="tutupModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Tanggal pemeliharaan dilakukan <span>*</span></label>
+        <input type="date" id="inp-tanggal"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Jenis pemeliharaan <span>*</span></label>
+        <select id="inp-jenis">
+          <option value="">— Pilih jenis —</option>
+          <option>Pemeriksaan rutin</option>
+          <option>Pembersihan</option>
+          <option>Perbaikan ringan</option>
+          <option>Penggantian suku cadang</option>
+          <option>Servis berkala</option>
+          <option>Kalibrasi</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kondisi setelah pemeliharaan <span>*</span></label>
+        <select id="inp-kondisi">
+          <option value="">— Pilih kondisi —</option>
+          <option>Baik</option>
+          <option>Baik dengan catatan</option>
+          <option>Perlu tindak lanjut</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Keterangan tambahan</label>
+        <textarea id="inp-ket" rows="3" placeholder="Contoh: filter dibersihkan, freon normal, tidak ada kerusakan..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-batal" onclick="tutupModal()">Batal</button>
+      <button class="btn-simpan" id="btn-simpan" onclick="simpanPemeliharaan()">Simpan Pemeliharaan</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon">✓</div>
+  <span id="toast-teks">Pemeliharaan berhasil dicatat!</span>
+</div>
+
+<script>
+// Fungsi toggle menu hamburger untuk mobile
+function toggleMenu() {
+  document.getElementById('nav-links').classList.toggle('open');
+}
+
+// ============================================================
+// KONFIGURASI — SESUAIKAN DENGAN SPREADSHEET KAMU
+// ============================================================
+const SPREADSHEET_ID = '15xfZKiQosGehy8GVH43Y-t2Dvkh7DShidTbGVtxmYCQ';
+
+const SHEET_NAME = 'perawatan'; 
+
+const COL = {
+  KODE: 1,          // A - Kode
+  NAMA: 2,          // B - Uraian/Nama Barang
+  QTY: 3,           // C - QTY
+  NUP: 4,           // D - NUP
+  TAHUN: 7,         // G - Tahun
+  PENGGUNA: 8,      // H - Pengguna
+  KONDISI: 9,       // I - Kondisi
+  STATUS: 10,       // J - Status
+  RUANGAN: 11,      // K - Ruang/Keterangan
+  POSISI: 12,       // L - Posisi
+  TGL_TERAKHIR: 13, // M - Tgl Pemeliharaan Terakhir
+  INTERVAL: 14,     // N - Interval Bulan
+  TGL_BERIKUTNYA: 15, // O - Tgl Pemeliharaan Berikutnya (rumus)
+};
+
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzwGD5X4aVxbnQs9Jx42jtHbCf164CfWFppYVd3mEeV8FbJ-m9I8AQ-nMX3nKapWj0/exec';
+
+// ============================================================
+
+const today = new Date();
+today.setHours(0,0,0,0);
+
+let semuaData = [];
+let filterAktif = 'semua';
+let asetAktif = null;
+
+function fmtTgl(tgl) {
+  if (!tgl) return null;
+  const d = new Date(tgl);
+  if (isNaN(d)) return null;
+  return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function addBulan(tgl, n) {
+  const d = new Date(tgl);
+  d.setMonth(d.getMonth() + parseInt(n));
+  return d;
+}
+
+function selisihHari(tgl) {
+  const d = new Date(tgl);
+  d.setHours(0,0,0,0);
+  return Math.round((d - today) / (1000 * 60 * 60 * 24));
+}
+
+function getStatus(tglTerakhir, interval) {
+  if (!tglTerakhir || !interval) {
+    return { key: 'belum', label: 'Belum ada data', kelas: 'badge-abu' };
+  }
+  const berikutnya = addBulan(tglTerakhir, interval);
+  const sisa = selisihHari(berikutnya);
+
+  function formatSisa(hari) {
+    const abs = Math.abs(hari);
+    const bln = Math.floor(abs / 30);
+    const shr = abs % 30;
+    if (bln > 0 && shr > 0) return bln + ' bulan ' + shr + ' hari';
+    if (bln > 0) return bln + ' bulan';
+    return abs + ' hari';
+  }
+
+  if (sisa < 0) return { key: 'merah', label: 'Lewat ' + formatSisa(sisa), kelas: 'badge-merah' };
+  if (sisa <= 14) return { key: 'kuning', label: 'Dalam ' + formatSisa(sisa), kelas: 'badge-kuning' };
+  return { key: 'hijau', label: 'Dalam ' + formatSisa(sisa), kelas: 'badge-hijau' };
+}
+
+async function ambilData() {
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    const res = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.substring(47).slice(0, -2));
+    const rows = json.table.rows;
+
+    let namaCarryForward = '';
+
+    semuaData = rows.map((row, i) => {
+      const c = row.c;
+      const val = (idx) => c[idx] && c[idx].v != null ? c[idx].v : '';
+      const fmtVal = (idx) => c[idx] && c[idx].f != null ? c[idx].f : null;
+
+      const namaBaru = val(COL.NAMA - 1);
+      if (namaBaru) namaCarryForward = namaBaru;
+      const nama = namaCarryForward;
+
+      const nup = val(COL.NUP - 1);
+      if (!nup && !nama) return null;
+
+      function parseTgl(raw) {
+        if (!raw) return null;
+        if (typeof raw === 'number') {
+          const d = new Date(Date.UTC(1899, 11, 30) + raw * 86400000);
+          return isNaN(d) ? null : d;
+        }
+        if (typeof raw === 'string') {
+          const d = new Date(raw);
+          return isNaN(d) ? null : d;
+        }
+        return null;
+      }
+
+      const tglTerakhirRaw = val(COL.TGL_TERAKHIR - 1);
+      const tglTerakhirFmt = fmtVal(COL.TGL_TERAKHIR - 1);
+      const interval = val(COL.INTERVAL - 1);
+
+      let tglTerakhir = null;
+      if (tglTerakhirFmt) {
+        tglTerakhir = new Date(tglTerakhirFmt);
+        if (isNaN(tglTerakhir)) tglTerakhir = null;
+      } else if (tglTerakhirRaw) {
+        tglTerakhir = parseTgl(tglTerakhirRaw);
+      }
+
+      const st = getStatus(tglTerakhir, interval);
+      const berikutnya = tglTerakhir && interval ? addBulan(tglTerakhir, interval) : null;
+
+      return {
+        rowIndex: i + 2,
+        nup: nup,
+        nama: nama,
+        pengguna: val(COL.PENGGUNA - 1),
+        posisi: val(COL.POSISI - 1),
+        tglTerakhir: tglTerakhir,
+        interval: interval,
+        berikutnya: berikutnya,
+        status: st
+      };
+    }).filter(d => d && d.nup);
+
+    updateStats();
+    renderTabel(semuaData);
+
+  } catch (err) {
+    document.getElementById('tabel-body').innerHTML =
+      `<tr class="loading-row"><td colspan="7">
+        ⚠️ Gagal memuat data. Pastikan Spreadsheet sudah dipublikasikan dan ID sudah benar.
+        <br><small style="color:#999;margin-top:4px;display:block">Error: ${err.message}</small>
+      </td></tr>`;
+    document.getElementById('jumlah-tampil').textContent = 'Gagal memuat data';
+  }
+}
+
+function updateStats() {
+  const jml = { merah: 0, kuning: 0, hijau: 0, belum: 0 };
+  semuaData.forEach(d => jml[d.status.key] = (jml[d.status.key] || 0) + 1);
+  document.getElementById('jml-merah').textContent = jml.merah || 0;
+  document.getElementById('jml-kuning').textContent = jml.kuning || 0;
+  document.getElementById('jml-hijau').textContent = jml.hijau || 0;
+}
+
+function renderTabel(data) {
+  const prioritas = { merah: 0, kuning: 1, belum: 2, hijau: 3 };
+  const sorted = [...data].sort((a, b) =>
+    (prioritas[a.status.key] || 99) - (prioritas[b.status.key] || 99)
+  );
+
+  if (!sorted.length) {
+    document.getElementById('tabel-body').innerHTML =
+      `<tr><td colspan="7"><div class="empty-state">
+        <div style="font-size:32px">📦</div>
+        <p>Tidak ada aset yang sesuai filter</p>
+      </div></td></tr>`;
+    document.getElementById('jumlah-tampil').textContent = '0 aset ditemukan';
+    return;
+  }
+
+  document.getElementById('jumlah-tampil').textContent =
+    `Menampilkan ${sorted.length} dari ${semuaData.length} aset`;
+
+  const tglClass = { merah: 'tgl-lewat', kuning: 'tgl-segera', hijau: 'tgl-aman', belum: 'tgl-kosong' };
+
+  document.getElementById('tabel-body').innerHTML = sorted.map(d => `
+    <tr>
+      <td style="font-size:12px;color:var(--teks-muted);font-weight:600">${d.nup || '—'}</td>
+      <td><div class="nama-barang">${d.nama}</div></td>
+      <td><div class="ruangan-text">${d.posisi || '—'}</div></td>
+      <td><div class="pj-text">${d.pengguna || '—'}</div></td>
+      <td>
+        <span class="${tglClass[d.status.key]}">
+          ${d.berikutnya ? fmtTgl(d.berikutnya) : '—'}
+        </span>
+      </td>
+      <td>
+        <span class="badge ${d.status.kelas}">
+          <span class="dot ${d.status.key === 'belum' ? '' : 'dot-' + d.status.key}"
+            style="${d.status.key === 'belum' ? 'background:#bbb' : ''}"></span>
+          ${d.status.label}
+        </span>
+      </td>
+      <td>
+        <button class="btn-catat" onclick='bukaModal(${JSON.stringify(d)})'>
+          Catat
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterData(key, btn) {
+  filterAktif = key;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.className = 'filter-btn';
+  });
+  if (key === 'semua') btn.className = 'filter-btn active-all';
+  else btn.className = 'filter-btn active-' + key;
+
+  terapkanFilter();
+}
+
+let kataCari = '';
+
+function terapkanFilter() {
+  let hasil = semuaData;
+  if (filterAktif !== 'semua') {
+    hasil = hasil.filter(d => d.status.key === filterAktif);
+  }
+  if (kataCari.trim()) {
+    const q = kataCari.toLowerCase().trim();
+    hasil = hasil.filter(d =>
+      (d.nama || '').toLowerCase().includes(q) ||
+      (d.pengguna || '').toLowerCase().includes(q) ||
+      (d.posisi || '').toLowerCase().includes(q) ||
+      String(d.nup || '').includes(q)
+    );
+  }
+  renderTabel(hasil);
+}
+
+function cariData(val) {
+  kataCari = val;
+  const clearBtn = document.getElementById('search-clear');
+  if (val.length > 0) clearBtn.classList.add('visible');
+  else clearBtn.classList.remove('visible');
+  terapkanFilter();
+}
+
+function bersihkanCari() {
+  kataCari = '';
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-clear').classList.remove('visible');
+  terapkanFilter();
+}
+
+function bukaModal(d) {
+  asetAktif = d;
+  document.getElementById('modal-nama').textContent = d.nama;
+  document.getElementById('modal-info').textContent =
+    (d.ruangan || '—') + ' · ' + (d.pj || '—');
+  const todayStr = new Date().toISOString().split('T')[0];
+  document.getElementById('inp-tanggal').value = todayStr;
+  document.getElementById('inp-jenis').value = '';
+  document.getElementById('inp-kondisi').value = '';
+  document.getElementById('inp-ket').value = '';
+  document.getElementById('modal').classList.add('open');
+}
+
+function tutupModal() {
+  document.getElementById('modal').classList.remove('open');
+  asetAktif = null;
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) tutupModal();
+});
+
+async function simpanPemeliharaan() {
+  const tanggal = document.getElementById('inp-tanggal').value;
+  const jenis = document.getElementById('inp-jenis').value;
+  const kondisi = document.getElementById('inp-kondisi').value;
+  const ket = document.getElementById('inp-ket').value;
+
+  if (!tanggal) { alert('Tanggal pemeliharaan wajib diisi!'); return; }
+  if (!jenis) { alert('Jenis pemeliharaan wajib dipilih!'); return; }
+  if (!kondisi) { alert('Kondisi setelah pemeliharaan wajib dipilih!'); return; }
+
+  const btn = document.getElementById('btn-simpan');
+  btn.disabled = true;
+  btn.textContent = 'Menyimpan...';
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        rowIndex: asetAktif.rowIndex,
+        namaBarang: asetAktif.nama,
+        ruangan: asetAktif.ruangan,
+        tanggal: tanggal,
+        jenis: jenis,
+        kondisi: kondisi,
+        keterangan: ket
+      })
+    });
+
+    const idx = semuaData.findIndex(d => d.rowIndex === asetAktif.rowIndex);
+    if (idx !== -1) {
+      semuaData[idx].tglTerakhir = new Date(tanggal);
+      semuaData[idx].berikutnya = addBulan(tanggal, semuaData[idx].interval);
+      semuaData[idx].status = getStatus(new Date(tanggal), semuaData[idx].interval);
+    }
+
+    tutupModal();
+    updateStats();
+    const filtered = filterAktif === 'semua'
+      ? semuaData
+      : semuaData.filter(d => d.status.key === filterAktif);
+    renderTabel(filtered);
+
+    tampilToast('Pemeliharaan ' + asetAktif.nama + ' berhasil dicatat!');
+
+  } catch (err) {
+    alert('Gagal menyimpan. Pastikan URL Apps Script sudah benar.\n' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Simpan Pemeliharaan';
+  }
+}
+
+function tampilToast(pesan) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-teks').textContent = pesan;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+document.getElementById('inp-tanggal').value = new Date().toISOString().split('T')[0];
+document.getElementById('inp-tanggal').max = new Date().toISOString().split('T')[0];
+
+ambilData();
+</script>
+</body>
+</html>
