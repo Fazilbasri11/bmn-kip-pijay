@@ -1133,14 +1133,21 @@ async function simpanPemeliharaan() {
       semuaData[idx].status = getStatus(new Date(tanggal), semuaData[idx].interval);
     }
 
-    tutupModal();
+    // --- PERBAIKAN DI SINI ---
+    // Simpan nama aset ke variabel lokal sebelum asetAktif dikosongkan oleh tutupModal()
+    const namaAsetDisimpan = asetAktif.nama; 
+
+    tutupModal(); 
+    
     updateStats();
     const filtered = filterAktif === 'semua'
       ? semuaData
       : semuaData.filter(d => d.status.key === filterAktif);
     renderTabel(filtered);
 
-    tampilToast('Pemeliharaan ' + asetAktif.nama + ' berhasil dicatat!');
+    // Tampilkan toast menggunakan variabel yang sudah disimpan
+    tampilToast('Pemeliharaan ' + namaAsetDisimpan + ' berhasil dicatat!');
+    // --------------------------
 
   } catch (err) {
     alert('Gagal menyimpan. Pastikan URL Apps Script sudah benar.\n' + err.message);
