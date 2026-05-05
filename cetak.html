@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cetak KIR — KIP Kabupaten Pidie Jaya</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --merah: #7B1113; --merah-tua: #5a0d0f; --merah-muda: #9e1518;
+    --krem: #f5f0e8; --krem-gelap: #ede5d8;
+    --teks: #1a1a1a; --teks-muted: #6b6560;
+    --putih: #ffffff; --abu: #e8e2d8;
+    --gold: #D4A017;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--krem); color: var(--teks); min-height: 100vh; }
+
+  /* NAVBAR */
+  #main-nav {
+    position:sticky;top:0;z-index:200;
+    background:rgba(78,14,14,0.97); backdrop-filter:blur(12px);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 2rem;height:64px; box-shadow:0 2px 24px rgba(0,0,0,0.3);
+  }
+  .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .nav-logo{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,#D4A017,#F0C040);display:flex;align-items:center;justify-content:center;font-size:18px;color:#4E0E0E;flex-shrink:0;}
+  .nav-brand-text .main{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;line-height:1.1;color:#fff;display:block;}
+  .nav-brand-text .sub{font-size:10px;color:rgba(255,255,255,.65);letter-spacing:.06em;text-transform:uppercase;display:block;}
+  .nav-links{display:flex;align-items:center;gap:4px}
+  .nav-links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:13px;font-weight:500;padding:8px 12px;border-radius:6px;transition:all .2s;font-family:'DM Sans', sans-serif;}
+  .nav-links a:hover{background:rgba(255,255,255,.12);color:#fff}
+  .nav-links a.active{background:rgba(212,160,23,.25);color:#F0C040;}
+  .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;}
+  .nav-hamburger span{width:22px;height:2px;background:rgba(255,255,255,.8);border-radius:2px;display:block;transition:all .3s}
+
+  /* HEADER */
+  .page-header { background: linear-gradient(135deg, var(--merah-tua) 0%, var(--merah) 100%); padding: 2.5rem 2rem 2rem; color: white; position: relative; overflow: hidden; }
+  .page-header::before { content: ''; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+  .header-inner { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; text-align: center; }
+  .page-header h1 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .page-header p { color: rgba(255,255,255,0.7); font-size: 14px; }
+
+  /* MAIN CONTENT */
+  .container { max-width: 600px; margin: -2rem auto 2rem; padding: 0 1.5rem; position: relative; z-index: 2; }
+  .print-card { background: var(--putih); border-radius: 16px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid var(--abu); }
+  
+  .form-group { margin-bottom: 1.5rem; }
+  .form-label { display: block; font-size: 13px; font-weight: 700; color: var(--teks-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .form-select { width: 100%; padding: 12px 16px; border: 1.5px solid var(--abu); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--teks); background: var(--krem); outline: none; transition: border-color 0.15s; appearance: none; cursor: pointer; }
+  .form-select:focus { border-color: var(--merah); background: var(--putih); }
+  
+  .btn-primary { width: 100%; padding: 14px; background: var(--merah); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
+  .btn-primary:hover { background: var(--merah-tua); transform: translateY(-2px); }
+  .btn-primary:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+
+  /* STATUS & HASIL */
+  .status-box { margin-top: 1.5rem; padding: 1rem; border-radius: 8px; font-size: 13px; text-align: center; display: none; }
+  .status-loading { background: #fff8e0; color: var(--kuning); border: 1px solid #e0c060; display: block; }
+  .status-success { background: #e8f5e8; color: var(--hijau); border: 1px solid #90c890; display: block; }
+  .btn-download { display: inline-block; margin-top: 10px; padding: 8px 20px; background: var(--hijau); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; }
+
+  /* FOOTER */
+  .page-footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--teks-muted); }
+
+  @media(max-width:900px){ #main-nav {padding: 0 1rem;} .nav-links{display:none} .nav-links.open{ display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:#4E0E0E;padding:1rem;gap:4px;z-index:199;} .nav-hamburger{display:flex} }
+</style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <a class="nav-brand" href="index.html">
+    <div class="nav-logo">⚖️</div>
+    <div class="nav-brand-text"><div class="main">KIP Pidie Jaya</div><div class="sub">Sistem Inventarisasi BMN</div></div>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="index.html">Beranda</a>
+    <a href="index.html#dashboard">Dashboard</a>
+    <a href="pemeliharaan.html">Pemeliharaan</a>
+    <a href="cetak.html" class="active">Cetak KIR</a>
+    <a href="index.html#faq">FAQ</a>
+  </div>
+  <button class="nav-hamburger" onclick="document.getElementById('nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="header-inner">
+    <h1>Cetak Kartu Inventaris Ruang</h1>
+    <p>Generate data inventaris (KIR) terbaru per ruangan dalam format PDF.</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="print-card">
+    <div class="form-group">
+      <label class="form-label">Pilih Ruangan</label>
+      <select id="select-ruangan" class="form-select">
+        <option value="">⏳ Memuat daftar ruangan...</option>
+      </select>
+    </div>
+
+    <button id="btn-generate" class="btn-primary" onclick="generatePDF()" disabled>
+      📄 Generate & Cetak PDF
+    </button>
+
+    <div id="status-area" class="status-box"></div>
+  </div>
+</div>
+
+<div class="page-footer">© 2026 KIP Kabupaten Pidie Jaya · Terhubung dengan Google Sheets</div>
+
+<script>
+// --- MASUKKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI ---
+const GAS_WEB_APP_URL = 'URL_WEB_APP_ANDA_DISINI'; 
+
+document.addEventListener('DOMContentLoaded', ambilDaftarRuangan);
+
+// 1. Fungsi mengambil daftar ruangan dari GS
+async function ambilDaftarRuangan() {
+  const select = document.getElementById('select-ruangan');
+  const btn = document.getElementById('btn-generate');
+  try {
+    const response = await fetch(GAS_WEB_APP_URL + '?action=getRuangan');
+    const data = await response.json();
+    
+    select.innerHTML = '<option value="">— Pilih Ruangan —</option>';
+    if(data.ruangan && data.ruangan.length > 0) {
+      data.ruangan.forEach(r => {
+        select.innerHTML += `<option value="${r}">${r}</option>`;
+      });
+      btn.disabled = false;
+    } else {
+      select.innerHTML = '<option value="">Tidak ada data ruangan</option>';
+    }
+  } catch(e) {
+    select.innerHTML = '<option value="">⚠️ Gagal memuat data</option>';
+    console.error(e);
+  }
+}
+
+// 2. Fungsi memerintahkan GS untuk generate sheet dan mengembalikan URL PDF
+async function generatePDF() {
+  const ruangan = document.getElementById('select-ruangan').value;
+  if (!ruangan) { alert('Silakan pilih ruangan terlebih dahulu!'); return; }
+
+  const btn = document.getElementById('btn-generate');
+  const status = document.getElementById('status-area');
+  
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Sedang menyusun PDF... (Mohon tunggu)';
+  status.className = 'status-box status-loading';
+  status.innerHTML = `Mensinkronisasi data aset untuk ruangan <b>${ruangan}</b>...`;
+
+  try {
+    const response = await fetch(GAS_WEB_APP_URL + '?action=generatePDF&ruangan=' + encodeURIComponent(ruangan));
+    const result = await response.json();
+
+    if(result.success) {
+      status.className = 'status-box status-success';
+      status.innerHTML = `
+        ✅ Berhasil! Dokumen siap diunduh.<br>
+        <a href="${result.pdfUrl}" target="_blank" class="btn-download">⬇️ Download PDF</a>
+      `;
+      btn.innerHTML = '📄 Generate Ulang PDF';
+    } else {
+      throw new Error(result.error || 'Terjadi kesalahan');
+    }
+  } catch(e) {
+    status.className = 'status-box status-loading';
+    status.style.color = '#7B1113';
+    status.style.backgroundColor = '#fdeaea';
+    status.style.borderColor = '#f0a0a0';
+    status.innerHTML = '⚠️ Gagal membuat PDF: ' + e.message;
+    btn.innerHTML = '📄 Generate & Cetak PDF';
+  } finally {
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
