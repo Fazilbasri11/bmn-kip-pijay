@@ -112,71 +112,93 @@
 <div class="page-footer">© 2026 KIP Kabupaten Pidie Jaya · Terhubung dengan Google Sheets</div>
 
 <script>
-// --- MASUKKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI ---
 const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwELQj-AA4agH0dVUjuh_wekIMvzj3AdcoSx6Q6S9wY5Mpg4LNXEIUGDT20Sy_zzQ/exec'; 
 
 document.addEventListener('DOMContentLoaded', ambilDaftarRuangan);
 
-// 1. Fungsi mengambil daftar ruangan dari GS
-async function ambilDaftarRuangan() {
-  const select = document.getElementById('select-ruangan');
-  const btn = document.getElementById('btn-generate');
+// 🔁 helper fetch (biar ga gampang fail)
+async function fetchJSON(url, retry = 2) {
   try {
-    const response = await fetch(GAS_WEB_APP_URL + '?action=getRuangan');
-    const data = await response.json();
-    
-    select.innerHTML = '<option value="">— Pilih Ruangan —</option>';
-    if(data.ruangan && data.ruangan.length > 0) {
-      data.ruangan.forEach(r => {
-        select.innerHTML += `<option value="${r}">${r}</option>`;
-      });
-      btn.disabled = false;
-    } else {
-      select.innerHTML = '<option value="">Tidak ada data ruangan</option>';
-    }
-  } catch(e) {
-    select.innerHTML = '<option value="">⚠️ Gagal memuat data</option>';
-    console.error(e);
+    const res = await fetch(url, { method: 'GET', mode: 'cors' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return await res.json();
+  } catch (err) {
+    if (retry > 0) return fetchJSON(url, retry - 1);
+    throw err;
   }
 }
 
-// 2. Fungsi memerintahkan GS untuk generate sheet dan mengembalikan URL PDF
+// ===============================
+// AMBIL RUANGAN
+// ===============================
+async function ambilDaftarRuangan() {
+  const select = document.getElementById('select-ruangan');
+  const btn = document.getElementById('btn-generate');
+
+  try {
+    const data = await fetchJSON(GAS_WEB_APP_URL + '?action=getRuangan');
+
+    select.innerHTML = '<option value="">— Pilih Ruangan —</option>';
+
+    if (data.ruangan?.length) {
+      data.ruangan.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = r;
+        opt.textContent = r;
+        select.appendChild(opt);
+      });
+      btn.disabled = false;
+    } else {
+      select.innerHTML = '<option>Tidak ada data</option>';
+    }
+
+  } catch (err) {
+    console.error(err);
+    select.innerHTML = '<option>⚠️ Gagal load (CORS / jaringan)</option>';
+  }
+}
+
+// ===============================
+// GENERATE PDF
+// ===============================
 async function generatePDF() {
   const ruangan = document.getElementById('select-ruangan').value;
-  if (!ruangan) { alert('Silakan pilih ruangan terlebih dahulu!'); return; }
+  if (!ruangan) return alert('Pilih ruangan dulu bang 😑');
 
   const btn = document.getElementById('btn-generate');
   const status = document.getElementById('status-area');
-  
+
   btn.disabled = true;
-  btn.innerHTML = '⏳ Sedang menyusun PDF... (Mohon tunggu)';
+  btn.innerHTML = '⏳ Loading...';
   status.className = 'status-box status-loading';
-  status.innerHTML = `Mensinkronisasi data aset untuk ruangan <b>${ruangan}</b>...`;
+  status.innerHTML = `Generate data <b>${ruangan}</b>...`;
 
   try {
-    const response = await fetch(GAS_WEB_APP_URL + '?action=generatePDF&ruangan=' + encodeURIComponent(ruangan));
-    const result = await response.json();
+    const url = GAS_WEB_APP_URL + '?action=generatePDF&ruangan=' + encodeURIComponent(ruangan);
+    const result = await fetchJSON(url);
 
-    if(result.success) {
+    if (result.success) {
       status.className = 'status-box status-success';
       status.innerHTML = `
-        ✅ Berhasil! Dokumen siap diunduh.<br>
+        ✅ Berhasil cuy<br>
         <a href="${result.pdfUrl}" target="_blank" class="btn-download">⬇️ Download PDF</a>
       `;
-      btn.innerHTML = '📄 Generate Ulang PDF';
+      btn.innerHTML = '🔁 Generate Lagi';
     } else {
-      throw new Error(result.error || 'Terjadi kesalahan');
+      throw new Error(result.error || 'Unknown error');
     }
-  } catch(e) {
+
+  } catch (err) {
+    console.error(err);
     status.className = 'status-box status-loading';
+    status.style.background = '#fdeaea';
     status.style.color = '#7B1113';
-    status.style.backgroundColor = '#fdeaea';
-    status.style.borderColor = '#f0a0a0';
-    status.innerHTML = '⚠️ Gagal membuat PDF: ' + e.message;
-    btn.innerHTML = '📄 Generate & Cetak PDF';
-  } finally {
-    btn.disabled = false;
+    status.innerHTML = '⚠️ Error: ' + err.message;
+
+    btn.innerHTML = '📄 Generate PDF';
   }
+
+  btn.disabled = false;
 }
 </script>
 </body>
